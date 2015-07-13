@@ -1,0 +1,35 @@
+body {
+    margin: 5px;
+    background-color: green;
+    color: Black;
+}
+h1 {
+    margin: 0;
+}
+#dealerCards {
+    min-height: 10px;
+    font-weight: bold;
+}
+#dealerScore {
+    min-height:  5px;
+    font-weight: bold;
+}
+#playerCards {
+    min-height: 10px;
+    font-weight: bold;
+
+}
+#playerScore {
+    min-height: 15px;
+    font-weight: bold;
+}
+#result {
+    min-height: 60px;
+    font-weight: bold;
+    font-size: 200%;
+
+}
+img.card {
+    height: 16px;
+    width: 16px;
+}
