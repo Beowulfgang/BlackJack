@@ -4,13 +4,10 @@ var App = {}
 App.deal = function () {
     App.socket.emit('deal');
 }
+
 App.stand = function () {
     App.socket.emit('stand');
 }
-/*
-App.stand = function () {
-    App.socket.emit('stand');
-}*/
 
 App.getSuitHtml = function (suit) {
     var image = 'club.png';

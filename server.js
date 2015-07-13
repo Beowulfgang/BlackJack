@@ -76,5 +76,3 @@ Server.init = function () {
 }
 
 Server.init();
-
-
