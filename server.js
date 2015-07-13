@@ -26,7 +26,7 @@ Server.stand = function (socket, data) {
         socket.emit('stand', game.toJson());
     });
 }
-/* hit fucntion
+
 Server.hit = function (socket, data) {
     console.log('hit');
     Server.getGame(socket, data, function (socket, game) {
@@ -34,7 +34,7 @@ Server.hit = function (socket, data) {
         socket.emit('hit', game.toJson());
     });
 }
-*/
+
 Server.registerSocketIO = function (io) {
     io.sockets.on('connection', function (socket) {
         console.log('User connected');
@@ -45,6 +45,9 @@ Server.registerSocketIO = function (io) {
         });
         socket.on('stand', function (data) {
             Server.stand(socket, data);
+        });
+        socket.on('hit', function (data) {
+            Server.hit(socket, data);
         });
         socket.on('disconnect', function (socket) {
             console.log('User disconnected');

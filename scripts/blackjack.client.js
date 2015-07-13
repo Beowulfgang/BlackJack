@@ -9,6 +9,10 @@ App.stand = function () {
     App.socket.emit('stand');
 }
 
+App.hit = function () {
+    App.socket.emit('hit');
+}
+
 App.getSuitHtml = function (suit) {
     var image = 'club.png';
     if (suit === 'H') {
@@ -77,11 +81,13 @@ App.enableButton = function (id) {
 }
 App.disableDeal = function () {
     App.disableButton('#deal');
+    App.enableButton('#hit');
     App.enableButton('#stand');
 }
 App.enableDeal = function () {
 
     App.enableButton('#deal');
+    App.disableButton('#hit');
     App.disableButton('#stand');
 }
 App.enableDealIfGameFinished = function (result) {
@@ -90,6 +96,12 @@ App.enableDealIfGameFinished = function (result) {
     }
 }
 App.dealResult = function (game) {
+    App.disableDeal();
+    App.updateDealer(game.dealer);
+    App.updatePlayer(game.player);
+    App.updateResult(game.result);
+}
+App.hitResult = function (game) {
     App.disableDeal();
 
     App.updateDealer(game.dealer);
@@ -108,22 +120,24 @@ App.socket = {}
 App.registerClientActions = function () {
     
     $('#deal').click(function () {
-
         App.deal();
     });
     $('#stand').click(function () {
-
         App.stand();
+    });
+        $('#hit').click(function () {
+        App.hit();
     });
 }
 App.registerServerActions = function () {    
     App.socket.on('stand', function (game) {
-
         App.standResult(game);
     });
     App.socket.on('deal', function (game) {
-
         App.dealResult(game);
+    });
+    App.socket.on('hit', function (game) {
+        App.hitResult(game);
     });
 }
 App.init = function () {
