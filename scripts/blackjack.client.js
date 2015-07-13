@@ -7,10 +7,10 @@ App.deal = function () {
 App.stand = function () {
     App.socket.emit('stand');
 }
-/*
-App.stand = function () {
-    App.socket.emit('stand');
-}*/
+App.hit = function () {
+    App.socket.emit('hit');
+}
+
 
 App.getSuitHtml = function (suit) {
     var image = 'club.png';
@@ -80,11 +80,13 @@ App.enableButton = function (id) {
 }
 App.disableDeal = function () {
     App.disableButton('#deal');
+    App.enableButton('#hit');
     App.enableButton('#stand');
 }
 App.enableDeal = function () {
 
     App.enableButton('#deal');
+    App.disableButton('#hit');
     App.disableButton('#stand');
 }
 App.enableDealIfGameFinished = function (result) {
@@ -99,6 +101,12 @@ App.dealResult = function (game) {
     App.updatePlayer(game.player);
     App.updateResult(game.result);
 }
+App.hitResult = function (game) {
+    App.updateDealer(game.dealer);
+    App.updatePlayer(game.player);
+    App.updateResult(game.result);
+    App.enableDealIfGameFinished(game.result);
+}
 App.standResult = function (game) {
 
     App.updateDealer(game.dealer);
@@ -111,11 +119,12 @@ App.socket = {}
 App.registerClientActions = function () {
     
     $('#deal').click(function () {
-
         App.deal();
     });
+    $('#hit').click(function () {
+        App.hit();
+    });
     $('#stand').click(function () {
-
         App.stand();
     });
 }
@@ -127,6 +136,9 @@ App.registerServerActions = function () {
     App.socket.on('deal', function (game) {
 
         App.dealResult(game);
+    });
+    App.socket.on('hit', function (game) {
+        App.hitResult(game);
     });
 }
 App.init = function () {
