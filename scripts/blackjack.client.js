@@ -38,7 +38,7 @@ App.getCardsHtml = function (cards) {
 
         var card = cards[i];
 
-        html += App.getRankHtml(card.rank);
+        html += App.getRankHtml(card.face);
         html += App.getSuitHtml(card.suit);
     }
     return html;
