@@ -47,7 +47,7 @@ function getUsers () {
    return userNames;
 }
 
-<<<<<<< HEAD
+
 
 Server.registerSocketIO = function (io) {
 io.sockets.on('connection', function (socket) {
@@ -56,7 +56,7 @@ io.sockets.on('connection', function (socket) {
         socket.user = user;
         users.push(user);
         updateClients();
-=======
+
 Server.bet = function(socket, data) {
     console.log('bet');
     Server.getGame(socket, data, function(socket, game) {
@@ -85,7 +85,6 @@ Server.registerSocketIO = function (io) {
         socket.on('bet', function(data) {
             Server.bet(socket, data);
         });
->>>>>>> 76106708eafd9f8409e3fdd82d2e2772ac1cd3d7
     });
  //dont touch below
     socket.set('game', blackjack.newGame())
