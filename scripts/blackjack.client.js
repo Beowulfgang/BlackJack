@@ -102,18 +102,18 @@ App.dealResult = function (game) {
     App.updateResult(game.result);
 }
 App.hitResult = function (game) {
-    App.disableDeal();
+    //App.disableDeal();
 
     App.updateDealer(game.dealer);
     App.updatePlayer(game.player);
     App.updateResult(game.result);
+    App.enableDealIfGameFinished(game.result);
 }
 App.standResult = function (game) {
 
     App.updateDealer(game.dealer);
     App.updatePlayer(game.player);
     App.updateResult(game.result);
-
     App.enableDealIfGameFinished(game.result);
 }
 App.socket = {}
