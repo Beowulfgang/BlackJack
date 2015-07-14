@@ -57,36 +57,36 @@ Server.bet = function(socket, data) {
 
 Server.registerSocketIO = function (io) {
     io.sockets.on('connection', function (socket) {
-        console.log('User connected');
+        console.log('User connected' + users.length);
         socket.on('adduser', function (user) {
-           socket.user = user;
+            socket.user = user;
             users.push(user);
             updateClients();
-             });
+        });
 
-    socket.set('game', blackjack.newGame())
-    socket.on('deal', function (data) {
-        Server.deal(socket, data);
-    });
-   socket.on('stand', function (data) {
-        Server.stand(socket, data);
-    });
-    socket.on('hit', function (data) {
-        Server.hit(socket, data);
-    });
-    socket.on('disconnect', function (socket) {
-       for(var i=0; i<users.length; i++) {
-            if(users[i] == socket.user) {
-                delete users[users[i]];
+        socket.set('game', blackjack.newGame())
+        socket.on('deal', function (data) {
+            Server.deal(socket, data);
+        });
+        socket.on('stand', function (data) {
+            Server.stand(socket, data);
+        });
+        socket.on('hit', function (data) {
+            Server.hit(socket, data);
+        });
+        socket.on('disconnect', function () {
+           for(var i=0; i<users.length; i++) {
+                if(users[i] == socket.user) {
+                    delete users.splice(i,1);
+                }
             }
+            console.log("User disconnected");
+            updateClients(); 
+        });
+        function updateClients() {
+            io.sockets.emit('update', users);
         }
-        console.log("User disconnected");
-        updateClients(); 
     });
-    function updateClients() {
-        io.sockets.emit('update', users);
-    }
- });
 }
 
 
