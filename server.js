@@ -47,16 +47,6 @@ function getUsers () {
    return userNames;
 }
 
-
-
-Server.registerSocketIO = function (io) {
-io.sockets.on('connection', function (socket) {
-  console.log('User connected'); //logs user connection
- socket.on('adduser', function (user) {
-        socket.user = user;
-        users.push(user);
-        updateClients();
-
 Server.bet = function(socket, data) {
     console.log('bet');
     Server.getGame(socket, data, function(socket, game) {
@@ -68,39 +58,22 @@ Server.bet = function(socket, data) {
 Server.registerSocketIO = function (io) {
     io.sockets.on('connection', function (socket) {
         console.log('User connected');
-        socket.set('game', blackjack.newGame())
+        socket.on('adduser', function (user) {
+           socket.user = user;
+            users.push(user);
+            updateClients();
+             });
 
-        socket.on('deal', function (data) {
-            Server.deal(socket, data);
-        });
-        socket.on('stand', function (data) {
-            Server.stand(socket, data);
-        });
-        socket.on('hit', function (data) {
-            Server.hit(socket, data);
-        });
-        socket.on('disconnect', function (socket) {
-            console.log('User disconnected');
-        });
-        socket.on('bet', function(data) {
-            Server.bet(socket, data);
-        });
-    });
- //dont touch below
     socket.set('game', blackjack.newGame())
-
     socket.on('deal', function (data) {
         Server.deal(socket, data);
     });
-
-    socket.on('stand', function (data) {
+   socket.on('stand', function (data) {
         Server.stand(socket, data);
     });
-
     socket.on('hit', function (data) {
         Server.hit(socket, data);
     });
-
     socket.on('disconnect', function (socket) {
        for(var i=0; i<users.length; i++) {
             if(users[i] == socket.user) {
@@ -113,9 +86,9 @@ Server.registerSocketIO = function (io) {
     function updateClients() {
         io.sockets.emit('update', users);
     }
-
-});
+ });
 }
+
 
 //Found images online with .svg (scalable vector graphics)
 Server.init = function () {
@@ -136,10 +109,8 @@ var httpServer = http.createServer(function (req, res) {
 }).listen(3000);
 
 console.log("Listening on port 3000");
-
 var io = require('socket.io').listen(httpServer);
 io.set('log level', 1); //removes console debug info - was annoying
 Server.registerSocketIO(io);
 }
-
 Server.init();
