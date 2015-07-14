@@ -37,14 +37,13 @@ Server.hit = function (socket, data) {
         socket.emit('hit', game.toJson());
     });
 }
-function getUsers () {
-   var userNames = [];
-   for(var name in users) {
-     if(users[name]) {
-       userNames.push(name);  
-     }
-   }
-   return userNames;
+
+Server.split = function(socket, data) {
+    console.log('split');
+    Server.getGame(socket, data, function(socket, game) {
+        game.split();
+        socket.emit('split', game.toJson());
+    });
 }
 
 Server.bet = function(socket, data) {
@@ -53,6 +52,16 @@ Server.bet = function(socket, data) {
         game.bet();
         socket.emit('bet', game.toJson());
     });
+}
+
+function getUsers () {
+   var userNames = [];
+   for(var name in users) {
+     if(users[name]) {
+       userNames.push(name);  
+     }
+   }
+   return userNames;
 }
 
 Server.registerSocketIO = function (io) {
