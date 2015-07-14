@@ -32,16 +32,16 @@
 
         <script>
         socket.on('connect', function (){
-        socket.emit('adduser', prompt("What's your name?"));
-             });
-        var userList = [];
-        socket.on('update', function (users){
-        userList = users;
-        $('#user').empty();
-        for(var i=0; i<userList.length; i++) {
-            $('#user').append("<h4>" + userList[i] + "</h4>"); 
-        }
-    });
+            socket.emit('adduser', prompt("What's your name?"));
+                 });
+            var userList = [];
+            socket.on('update', function (users){
+            userList = users;
+            $('#user').empty();
+            for(var i=0; i<userList.length; i++) {
+                $('#user').append("<h4>" + userList[i] + "</h4>"); 
+            }
+        });
         </script>
     </body>
 </html>

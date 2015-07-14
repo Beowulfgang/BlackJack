@@ -8,34 +8,34 @@ var Server = {}
 var users = [];
 
 Server.getGame = function (socket, data, callback) {
-socket.get('game', function (err, game) {
-    callback(socket, game);
-});
+    socket.get('game', function (err, game) {
+        callback(socket, game);
+    });
 }
 
 Server.deal = function (socket, data) {
-console.log('deal');
-Server.getGame(socket, data, function (socket, game) {
-    if (!game.isInProgress()) {
-        game.newGame();
-    }
-    socket.emit('deal', game.toJson());
-});
+    console.log('deal');
+    Server.getGame(socket, data, function (socket, game) {
+        if (!game.isInProgress()) {
+            game.newGame();
+        }
+        socket.emit('deal', game.toJson());
+    });
 }
 Server.stand = function (socket, data) {
-console.log('stand');
-Server.getGame(socket, data, function (socket, game) {
-    game.stand();
-    socket.emit('stand', game.toJson());
-});
+    console.log('stand');
+    Server.getGame(socket, data, function (socket, game) {
+        game.stand();
+        socket.emit('stand', game.toJson());
+    });
 }
 
 Server.hit = function (socket, data) {
-console.log('hit');
-Server.getGame(socket, data, function (socket, game) {
-    game.hit();
-    socket.emit('hit', game.toJson());
-});
+    console.log('hit');
+    Server.getGame(socket, data, function (socket, game) {
+        game.hit();
+        socket.emit('hit', game.toJson());
+    });
 }
 function getUsers () {
    var userNames = [];
@@ -57,7 +57,7 @@ Server.bet = function(socket, data) {
 
 Server.registerSocketIO = function (io) {
     io.sockets.on('connection', function (socket) {
-        console.log('User connected' + users.length);
+        console.log('User connected');
         socket.on('adduser', function (user) {
             socket.user = user;
             users.push(user);
@@ -92,25 +92,25 @@ Server.registerSocketIO = function (io) {
 
 //Found images online with .svg (scalable vector graphics)
 Server.init = function () {
-var httpServer = http.createServer(function (req, res) {
-    var path = url.parse(req.url).pathname;
-    var contentType = 'text/html';
-    if (path === '/') {
-        path = '/index.html';
-    } else if (path.indexOf('.css')) {
-        contentType = 'text/css';
-    } else if (path.indexOf('.svg')) {
-        contentType = 'image/svg+xml';
-    }
-    fs.readFile(__dirname + path, function (error, data) {
-        res.writeHead(200, { 'Content-Type': contentType });
-        res.end(data, 'utf-8');
-    });
-}).listen(3000);
+    var httpServer = http.createServer(function (req, res) {
+        var path = url.parse(req.url).pathname;
+        var contentType = 'text/html';
+        if (path === '/') {
+            path = '/index.html';
+        } else if (path.indexOf('.css')) {
+            contentType = 'text/css';
+        } else if (path.indexOf('.svg')) {
+            contentType = 'image/svg+xml';
+        }
+        fs.readFile(__dirname + path, function (error, data) {
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(data, 'utf-8');
+        });
+    }).listen(3000);
 
-console.log("Listening on port 3000");
-var io = require('socket.io').listen(httpServer);
-io.set('log level', 1); //removes console debug info - was annoying
-Server.registerSocketIO(io);
+    console.log("Listening on port 3000");
+    var io = require('socket.io').listen(httpServer);
+    io.set('log level', 1); //removes console debug info - was annoying
+    Server.registerSocketIO(io);
 }
 Server.init();
