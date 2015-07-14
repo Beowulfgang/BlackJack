@@ -140,14 +140,29 @@ App.registerServerActions = function () {
         App.hitResult(game);
     });
 }
+
+App.getUserName = function()
+{
+    App.socket.on('connect', function (){
+      App.socket.emit('adduser', prompt("What's your name?"));
+             });
+        var userList = [];
+    App.socket.on('update', function (users){
+        userList = users;
+        $('#user').empty();
+        for(var i=0; i<userList.length; i++) {
+            $('#user').append("<h4>" + userList[i] + "</h4>"); 
+        }
+    });
+}
 App.init = function () {
 
     var socket = io.connect('http://localhost:3000');
     App.socket = socket;
-    
     App.registerClientActions();
     App.registerServerActions();
     App.enableDeal();
+    App.getUserName();
 }
 
 $(document).ready(function () {
