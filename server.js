@@ -35,6 +35,14 @@ Server.hit = function (socket, data) {
     });
 }
 
+Server.bet = function(socket, data) {
+    console.log('bet');
+    Server.getGame(socket, data, function(socket, game) {
+        game.bet();
+        socket.emit('bet', game.toJson());
+    });
+}
+
 Server.registerSocketIO = function (io) {
     io.sockets.on('connection', function (socket) {
         console.log('User connected');
@@ -51,6 +59,9 @@ Server.registerSocketIO = function (io) {
         });
         socket.on('disconnect', function (socket) {
             console.log('User disconnected');
+        });
+        socket.on('bet', function(data) {
+            Server.bet(socket, data);
         });
     });
 }
