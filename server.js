@@ -4,7 +4,7 @@ url = require('url'),
 blackjack = require('./lib/blackjack');
 
 
-var Server = {}
+var Server = {};
 var users = [];
 
 Server.getGame = function (socket, data, callback) {
